@@ -1,6 +1,7 @@
 package com.expense.tracker.transaction.repository;
 
 import com.expense.tracker.authentication.entity.User;
+import com.expense.tracker.transaction.entity.Category;
 import com.expense.tracker.transaction.entity.Transaction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,10 +19,13 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     Page<Transaction> findByUserAndType(User user, String type, Pageable pageable);
 
-    Page<Transaction> findByUserAndCategory(User user, com.expense.tracker.transaction.entity.Category category, Pageable pageable);
+    Page<Transaction> findByUserAndCategory(User user, Category category, Pageable pageable);
 
     Page<Transaction> findByUserAndTransactionDateBetween(
             User user, LocalDate startDate, LocalDate endDate, Pageable pageable);
+
+    List<Transaction> findByUserAndTransactionDateBetween(
+            User user, LocalDate startDate, LocalDate endDate);
 
     @Query("""
         SELECT t FROM Transaction t
@@ -47,6 +51,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             @Param("search") String search,
             Pageable pageable);
 
-    List<Transaction> findByUserAndTransactionDateBetween(
-            User user, LocalDate startDate, LocalDate endDate);
+    @Query("SELECT t FROM Transaction t WHERE t.user.id = :userId AND t.account.id = :accountId AND t.deletedAt IS NULL ORDER BY t.transactionDate DESC")
+    List<Transaction> findByUserAndAccountOrderByTransactionDateDesc(
+            @Param("userId") Long userId,
+            @Param("accountId") Long accountId);
 }
