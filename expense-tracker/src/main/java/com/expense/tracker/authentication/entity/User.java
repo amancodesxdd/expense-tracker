@@ -39,6 +39,7 @@ public class User {
     private String role = "USER";
 
     @Column(nullable = false)
+    @Builder.Default
     private Boolean isActive = true;
 
     @Column(name = "created_at", nullable = false, updatable = false)

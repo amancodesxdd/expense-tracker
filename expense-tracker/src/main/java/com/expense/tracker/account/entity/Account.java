@@ -32,8 +32,10 @@ public class Account {
     private String type; // CASH, SAVINGS, BANK
 
     @Column(nullable = false, precision = 19, scale = 4)
+    @Builder.Default
     private BigDecimal balance = BigDecimal.ZERO;
 
     @Column(length = 3)
+    @Builder.Default
     private String currency = "INR";
 }
