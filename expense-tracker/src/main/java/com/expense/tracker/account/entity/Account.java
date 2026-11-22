@@ -38,4 +38,9 @@ public class Account {
     @Column(length = 3)
     @Builder.Default
     private String currency = "INR";
+
+    @Version
+    @Column(nullable = false)
+    @Builder.Default
+    private Integer version = 0;
 }
